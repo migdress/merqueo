@@ -9,10 +9,34 @@ class ProductoTest extends TestCase
 {
     public function testAgregar()
     {
-        $calculator = new Calculator();
-        $result = $calculator->add(30, 12);
-
-        // assert that your calculator added the numbers correctly!
-        $this->assertEquals(42, $result);
+        $producto = new Producto();
+        $producto->setUnidadesActuales(1);
+        $producto->agregar(19);
+        $this->assertEquals(20, $producto->getUnidadesActuales());
     }
+
+    public function testRestar()
+    {
+        $producto = new Producto();
+        $producto->setUnidadesActuales(10);
+        $producto->restar(5);
+        $this->assertEquals(5, $producto->getUnidadesActuales());
+    }
+
+    public function testActivar()
+    {
+        $producto = new Producto();
+        $producto->setEstado(Producto::ESTADO_PRODUCTO_ACTIVO);
+        $this->assertEquals(Producto::ESTADO_PRODUCTO_ACTIVO, $producto->getEstado());
+    }
+    
+    public function testDesactivar()
+    {
+        $producto = new Producto();
+        $producto->setEstado(Producto::ESTADO_PRODUCTO_INACTIVO);
+        $this->assertEquals(Producto::ESTADO_PRODUCTO_INACTIVO, $producto->getEstado());
+    }
+
+
+
 }
