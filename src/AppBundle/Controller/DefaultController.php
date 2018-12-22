@@ -27,9 +27,9 @@ class DefaultController extends Controller
 			"productos"=>$productos
 		]);
     }
-   
+
     /**
-     * 
+     *
      * @Route("/uploadFile", name="uploadcsv", methods={"POST"})
      * @param Request $request
      */
@@ -38,11 +38,11 @@ class DefaultController extends Controller
         $handle = fopen($file->getPathname(),"r");
         $em = $this->getDoctrine()->getManager();
         if($handle){
-            while(($line = fgets($handle)) !== false){
+            while(($line = fgets($handle)) !== false && trim($line)!=""){
                 $lineSplit = explode(",",$line);
-                $id = trim($lineSplit[0]);
-                $accion = trim($lineSplit[1]);
-                $param = trim($lineSplit[2]);
+				$id = trim($lineSplit[0]);
+				$accion = trim($lineSplit[1]);
+				$param = isset($lineSplit[2])?trim($lineSplit[2]):null;
 
                 // Se busca el producto
                 $producto = $em->getRepository(Producto::class)->find($id);
@@ -64,7 +64,7 @@ class DefaultController extends Controller
                         $producto->restar($param);
                         break;
                 }
-                
+
             }
             fclose($handle);
         }
