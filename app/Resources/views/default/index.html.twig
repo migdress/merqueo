@@ -1,7 +1,71 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+    <div class="container">
+        <h2>Inventario de productos</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nombre</th>
+                    <th>Referencia</th>
+                    <th>Precio</th>
+                    <th>Costo</th>
+                    <th>Unidades</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for producto in productos %}
+                    <tr>
+                        <td>{{ producto.id }}</td>
+                        <td>{{ producto.nombre }}</td>
+                        <td>{{ producto.referencia }}</td>
+                        <td>{{ producto.precio }}</td>
+                        <td>{{ producto.costo }}</td>
+                        <td>{{ producto.unidadesActuales }}</td>
+                        <td>{{ producto.estado }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        
+        
+        <form id="form" action="{{ path('uploadcsv') }}" method="POST" enctype="multipart/form-data">
+            <div class="form-group" >
+                <label for="csv">Adjunte el archivo CSV:</label>
+                <input type="file" class="form-control" name="csv" id="csv">
+            </div>
+           <div class="form-group" >
+                <input type="submit" class="btn-primary" id="enviar" value="Enviar">
+            </div>
+        </form>
+        
+    </div>
 {% endblock %}
 
-{% block stylesheets %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function(){
+
+            $("#form").validate({
+                rules: {
+                    csv: {required: true}
+                },
+                messages:{
+                    csv: {
+                        required: "Debe especificar un archivo csv para subir"
+                    }
+                },
+                submitHandler: function(form){
+                    form.submit();
+                }
+            });
+            //$("#form").valid();
+
+        });
+    </script>
 {% endblock %}
+
